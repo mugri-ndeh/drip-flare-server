@@ -72,7 +72,7 @@ import IPostService from "../../services/IPostService";
 import IReviewService from "../../services/IReviewService";
 import ISaveService from "../../services/ISaveService";
 import PostRepository from "../../repository/implementation/PostRepository";
-import LocationController from "../../controllers/Locationcontroller";
+import LocationController from "../../controllers/LocationController";
 
 const container = DependencyInjectionManager.getInstance().getContainer();
 
