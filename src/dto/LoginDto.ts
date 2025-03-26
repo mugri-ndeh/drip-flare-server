@@ -12,7 +12,7 @@ export class LoginDto {
   password!: string;
 }
 
-export default class LoginResponseDto {
+export class LoginResponseDto {
   @Expose()
   accessToken!: string;
   @Expose()
@@ -21,4 +21,12 @@ export default class LoginResponseDto {
   userDetails!: User;
   @Expose()
   expiresIn!: Date;
+}
+
+export class RefreshTokenDTO {
+  @IsString()
+  expiredToken!: string;
+
+  @IsString()
+  refreshToken!: string;
 }

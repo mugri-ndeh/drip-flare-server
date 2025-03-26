@@ -12,7 +12,7 @@ export default interface ILikeService {
 
   getPosLikest(id: string): Promise<Like[]>;
 
-  getCommentLikes(id: string): Promise<Like>[];
+  getCommentLikes(id: string): Promise<Like[]>;
 
   deleteLike(Like: Like): Promise<void>;
 }

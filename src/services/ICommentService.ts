@@ -4,7 +4,10 @@ import AppComment from "../models/Comment";
 export default interface ICommentService {
   createComment(commentRequestDto: CommentDto): Promise<AppComment>;
 
-  updateComment(comment: Comment, commentDto: CommentDto): Promise<Comment>;
+  updateComment(
+    comment: AppComment,
+    commentDto: CommentDto
+  ): Promise<AppComment>;
 
   getCommentByProperty(property: any): Promise<AppComment>;
 

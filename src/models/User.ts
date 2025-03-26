@@ -21,31 +21,38 @@ export default class User extends BaseEntity {
   fullName!: string;
 
   @Expose()
+  @Column({
+    type: "simple-array",
+    nullable: true,
+  })
+  role!: string[];
+
+  @Expose()
   @Column()
   password!: string;
 
   @Expose()
-  @Column()
+  @Column({ nullable: false, default: "" })
   profileLink!: string;
 
   @Expose()
-  @Column()
+  @Column({ nullable: false, default: "" })
   profilePictureUrl!: string;
 
   @Expose()
-  @Column()
+  @Column({ nullable: false, default: "" })
   bio!: string;
 
   @Expose()
-  @Column("text", { nullable: false })
+  @Column("text", { nullable: false, default: [] })
   interests!: string[];
 
   @Expose()
-  @Column("text", { nullable: false })
+  @Column("text", { nullable: false, default: [] })
   deviceTokens!: string[];
 
   @Expose()
-  @Column("text", { nullable: false })
+  @Column("text", { nullable: false, default: [] })
   authMethods!: string[];
 
   @OneToOne(() => Business, (business) => business.user, {
@@ -67,7 +74,7 @@ export default class User extends BaseEntity {
   @JoinColumn({ name: "locationId" })
   location!: AppLocation;
 
-  @Column()
+  @Column({ nullable: true })
   locationId?: string;
 
   @OneToMany(() => AppComment, (comment) => comment.user)
@@ -84,4 +91,9 @@ export default class User extends BaseEntity {
 
   @OneToMany(() => Save, (save) => save.user)
   saves!: Save[];
+
+  constructor() {
+    super();
+    this.role = ["USER"];
+  }
 }

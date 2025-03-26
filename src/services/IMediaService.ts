@@ -1,9 +1,10 @@
+import { MediaDto } from "../dto/MediaDto";
 import Media from "../models/Media";
 
 export default interface IMediaService {
-  createMedia(mediaRequestDto: Media): Promise<Media>;
+  createMedia(mediaRequestDto: MediaDto): Promise<Media>;
 
-  updateMedia(Media: Media): Promise<Media>;
+  updateMedia(media: Media, mediaDto: MediaDto): Promise<Media>;
 
   geMediaByProperty(property: any): Promise<Media>;
 

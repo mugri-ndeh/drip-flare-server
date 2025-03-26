@@ -8,7 +8,7 @@ export default interface IFaqService {
 
   geFaqByProperty(property: any): Promise<Faq>;
 
-  getFaq(): Promise<Faq>;
+  getFaqs(): Promise<Faq[]>;
 
   deleteFaq(Faq: Faq): Promise<void>;
 }

@@ -1,4 +1,4 @@
-import LoginResponseDto from "../dto/LoginDto";
+import { LoginResponseDto } from "../dto/LoginDto";
 import { RegisterDto } from "../dto/RegisterDto";
 import User from "../models/User";
 

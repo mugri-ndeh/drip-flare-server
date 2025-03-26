@@ -8,11 +8,11 @@ const options = {
     info: {
       title: "Dripfare API",
       version: "1.0.0",
-      description: "API documentation for buzme",
+      description: "API documentation for dripfare",
     },
     servers: [
       {
-        url: "http://localhost:3002/api",
+        url: "http://localhost:3005/api",
         description: "Development server",
       },
     ],
@@ -30,7 +30,7 @@ const options = {
         },
       },
       schemas: {
-        Business: {
+        BusinessDto: {
           type: "object",
           properties: {
             id: { type: "string", format: "uuid" },
@@ -49,7 +49,7 @@ const options = {
           },
         },
 
-        Category: {
+        CategoryDto: {
           type: "object",
           properties: {
             id: { type: "string", format: "uuid" },
@@ -59,7 +59,7 @@ const options = {
           },
         },
 
-        AppComment: {
+        AppCommentDto: {
           type: "object",
           properties: {
             id: { type: "string", format: "uuid" },
@@ -71,7 +71,7 @@ const options = {
           },
         },
 
-        Faq: {
+        FaqDto: {
           type: "object",
           properties: {
             id: { type: "string", format: "uuid" },
@@ -82,7 +82,7 @@ const options = {
           },
         },
 
-        Like: {
+        LikeDto: {
           type: "object",
           properties: {
             id: { type: "string", format: "uuid" },
@@ -94,7 +94,7 @@ const options = {
           },
         },
 
-        AppLocation: {
+        AppLocationDto: {
           type: "object",
           properties: {
             id: { type: "string", format: "uuid" },
@@ -110,7 +110,7 @@ const options = {
           },
         },
 
-        Measurement: {
+        MeasurementDto: {
           type: "object",
           properties: {
             id: { type: "string", format: "uuid" },
@@ -130,7 +130,7 @@ const options = {
           },
         },
 
-        AppNotification: {
+        AppNotificationDto: {
           type: "object",
           properties: {
             id: { type: "string", format: "uuid" },
@@ -147,7 +147,7 @@ const options = {
           },
         },
 
-        Post: {
+        PostDto: {
           type: "object",
           properties: {
             id: { type: "string", format: "uuid" },
@@ -167,7 +167,7 @@ const options = {
           },
         },
 
-        Review: {
+        ReviewDto: {
           type: "object",
           properties: {
             id: { type: "string", format: "uuid" },
@@ -180,7 +180,7 @@ const options = {
           },
         },
 
-        Save: {
+        SaveDto: {
           type: "object",
           properties: {
             id: { type: "string", format: "uuid" },
@@ -191,7 +191,7 @@ const options = {
           },
         },
 
-        User: {
+        UserDto: {
           type: "object",
           properties: {
             id: { type: "string", format: "uuid" },
@@ -235,7 +235,7 @@ const swaggerDocs = (app: any) => {
     res.send(swaggerSpec);
   });
 
-  console.log(`Swagger docs available at http://localhost:3002/api-docs`);
+  console.log(`Swagger docs available at http://localhost:3005/api-docs`);
 };
 
 export default swaggerDocs;

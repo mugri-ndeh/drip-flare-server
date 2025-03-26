@@ -56,7 +56,5 @@ export class BusinessDto extends BaseDto {
   type?: "laundry" | "designer" = "designer";
 
   @Expose()
-  @IsUUID()
-  @IsNotEmpty()
-  userId!: string;
+  userId?: string;
 }

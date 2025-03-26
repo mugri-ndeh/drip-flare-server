@@ -4,6 +4,7 @@ import { IMeasurementRepository } from "../../repository/RepositoryInterfaces";
 import IMeasurementService from "../IMeasurementService";
 import { MeasurementDto } from "../../dto/MeasurementDto";
 import Measurement from "../../models/Measurement";
+import { plainToClass } from "class-transformer";
 
 @injectable()
 export default class MeasurementService implements IMeasurementService {
@@ -15,24 +16,45 @@ export default class MeasurementService implements IMeasurementService {
   ) {
     this.iMeasurementRepository = MeasurementRepository;
   }
-  createMeasurement(
+  async createMeasurement(
     measurementRequestDto: MeasurementDto
   ): Promise<Measurement> {
-    throw new Error("Method not implemented.");
+    let data = plainToClass(Measurement, measurementRequestDto);
+    const measurement = await this.iMeasurementRepository.create(data);
+    return Promise.resolve(measurement);
   }
-  updateMeasurement(
+  async updateMeasurement(
     measurement: Measurement,
     measurementDto: MeasurementDto
   ): Promise<Measurement> {
-    throw new Error("Method not implemented.");
+    let measurementU: Measurement = await this.iMeasurementRepository.findOne({
+      id: measurement.id,
+    });
+
+    for (const [key, value] of Object.entries(measurementDto)) {
+      if (value !== undefined) {
+        (measurementU as any)[key] = value;
+      }
+    }
+
+    const faqResponse: Measurement = await this.iMeasurementRepository.update(
+      measurement.id,
+      measurementU
+    );
+
+    return Promise.resolve(faqResponse);
   }
-  geMeasurementByProperty(property: any): Promise<Measurement> {
-    throw new Error("Method not implemented.");
+  async geMeasurementByProperty(property: any): Promise<Measurement> {
+    const measurement = await this.iMeasurementRepository.findOne(property);
+    return Promise.resolve(measurement);
   }
-  getUserMeasurement(id: string): Promise<Measurement> {
-    throw new Error("Method not implemented.");
+  async getUserMeasurement(id: string): Promise<Measurement> {
+    const measurement = await this.iMeasurementRepository.findOne({
+      userId: id,
+    });
+    return Promise.resolve(measurement);
   }
-  deleteMeasurement(Measurement: Measurement): Promise<void> {
-    throw new Error("Method not implemented.");
+  async deleteMeasurement(measurement: Measurement): Promise<void> {
+    await this.iMeasurementRepository.delete(measurement);
   }
 }

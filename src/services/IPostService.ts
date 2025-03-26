@@ -15,5 +15,7 @@ export default interface IPostService {
 
   getPostByLocation(location: AppLocation): Promise<Post[]>;
 
+  getAllPosts(): Promise<Post[]>;
+
   deletePost(Post: Post): Promise<void>;
 }

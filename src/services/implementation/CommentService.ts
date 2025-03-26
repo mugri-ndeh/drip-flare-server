@@ -1,9 +1,10 @@
 import { injectable, inject } from "inversify";
 import { IOC } from "../../config/inversify/inversify.ioc.types";
-import ICommentRepository from "../ICommentService";
+import { ICommentRepository } from "../../repository/RepositoryInterfaces";
 import ICommentService from "../ICommentService";
 import { CommentDto } from "../../dto/CommentDto";
 import AppComment from "../../models/Comment";
+import { plainToClass } from "class-transformer";
 
 @injectable()
 export default class CommentService implements ICommentService {
@@ -14,22 +15,49 @@ export default class CommentService implements ICommentService {
   ) {
     this.iCommentRepository = CommentRepository;
   }
-  createComment(commentRequestDto: CommentDto): Promise<AppComment> {
-    throw new Error("Method not implemented.");
+  async createComment(commentRequestDto: CommentDto): Promise<AppComment> {
+    let data = plainToClass(AppComment, commentRequestDto);
+    const category = await this.iCommentRepository.create(data);
+    return Promise.resolve(category);
   }
-  updateComment(comment: Comment, commentDto: CommentDto): Promise<Comment> {
-    throw new Error("Method not implemented.");
+  async updateComment(
+    comment: AppComment,
+    commentDto: CommentDto
+  ): Promise<AppComment> {
+    let commentU: AppComment = await this.iCommentRepository.findOne({
+      id: comment.id,
+    });
+
+    for (const [key, value] of Object.entries(commentDto)) {
+      if (value !== undefined) {
+        (commentU as any)[key] = value;
+      }
+    }
+
+    const commentResponse: AppComment = await this.iCommentRepository.update(
+      comment.id,
+      commentU
+    );
+
+    return Promise.resolve(commentResponse);
   }
-  getCommentByProperty(property: any): Promise<AppComment> {
-    throw new Error("Method not implemented.");
+  async getCommentByProperty(property: any): Promise<AppComment> {
+    try {
+      const comment = await this.iCommentRepository.findOne(property);
+      return Promise.resolve(comment);
+    } catch (error) {
+      throw error;
+    }
   }
-  getUserComments(id: string): Promise<AppComment[]> {
-    throw new Error("Method not implemented.");
+  async getUserComments(id: string): Promise<AppComment[]> {
+    const comments = await this.iCommentRepository.find({ userId: id });
+    return Promise.resolve(comments);
   }
-  getPostComments(id: string): Promise<AppComment[]> {
-    throw new Error("Method not implemented.");
+  async getPostComments(id: string): Promise<AppComment[]> {
+    const comments = await this.iCommentRepository.find({ postId: id });
+    return Promise.resolve(comments);
   }
-  deleteComment(Comment: AppComment): Promise<void> {
-    throw new Error("Method not implemented.");
+  async deleteComment(comment: AppComment): Promise<void> {
+    await this.iCommentRepository.delete(comment);
   }
 }

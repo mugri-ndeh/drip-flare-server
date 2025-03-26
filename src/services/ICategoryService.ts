@@ -9,7 +9,9 @@ export default interface ICategoryService {
     categoryDto: CategoryDto
   ): Promise<Category>;
 
-  geCategoryByProperty(property: any): Promise<Category>;
+  getCategoryByProperty(property: any): Promise<Category>;
+
+  getAllCategories(property: any): Promise<Category[]>;
 
   getCategoryEntityById(id: string): Promise<Category>;
 

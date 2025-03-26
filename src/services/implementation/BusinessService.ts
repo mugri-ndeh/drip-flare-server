@@ -16,30 +16,64 @@ export default class BusinessService implements IBusinessService {
   ) {
     this.iBusinessRepository = businessRepository;
   }
-  createBusiness(
+  async createBusiness(
     businessRegistrationRequestDto: BusinessDto
   ): Promise<Business> {
-    throw new Error("Method not implemented.");
+    const businessRequest = plainToClass(
+      Business,
+      businessRegistrationRequestDto
+    );
+    const business = await this.iBusinessRepository.create(businessRequest);
+    return Promise.resolve(business);
   }
-  updateBusiness(
+  async updateBusiness(
     business: Business,
-    BusinessDto: BusinessDto
+    businessRequestDto: BusinessDto
   ): Promise<Business> {
-    throw new Error("Method not implemented.");
+    let businessU: Business = await this.iBusinessRepository.findOne({
+      id: business.id,
+    });
+
+    for (const [key, value] of Object.entries(businessRequestDto)) {
+      if (value !== undefined) {
+        (businessU as any)[key] = value;
+      }
+    }
+
+    const businessResponse: Business = await this.iBusinessRepository.update(
+      business.id,
+      businessU
+    );
+
+    return Promise.resolve(businessResponse);
   }
-  geBusinessByProperty(property: any): Promise<Business> {
-    throw new Error("Method not implemented.");
+  async geBusinessByProperty(property: any): Promise<Business> {
+    try {
+      const business = await this.iBusinessRepository.findOne(property);
+      return Promise.resolve(business);
+    } catch (error) {
+      throw error;
+    }
   }
-  getBusinessById(id: any): Promise<Business> {
-    throw new Error("Method not implemented.");
+  async getBusinessById(id: any): Promise<Business> {
+    let business: Business = await this.iBusinessRepository.findOne({ id: id });
+    return Promise.resolve(business);
   }
-  getBusinessByUserId(id: any): Promise<Business> {
-    throw new Error("Method not implemented.");
+  async getBusinessByUserId(id: any): Promise<Business> {
+    let business: Business = await this.iBusinessRepository.findOne(
+      { userId: id },
+      {
+        relations: ["user"],
+      }
+    );
+    return Promise.resolve(business);
   }
-  getBusinessEntityById(id: string): Promise<Business> {
-    throw new Error("Method not implemented.");
+  async getBusinessEntityById(id: string): Promise<Business> {
+    let business: Business = await this.iBusinessRepository.findOne({ id: id });
+    return Promise.resolve(business);
   }
-  deleteBusiness(business: Business): Promise<void> {
-    throw new Error("Method not implemented.");
+  async deleteBusiness(business: Business): Promise<void> {
+    await this.iBusinessRepository.delete(business);
+    return Promise.resolve();
   }
 }

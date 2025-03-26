@@ -74,19 +74,19 @@ const startServer = async function () {
     next();
   });
 
-  app.use("api/business", businessApis);
-  app.use("api/category", categoryApis);
-  app.use("api/comment", commentApis);
-  app.use("api/faq", faqApis);
-  app.use("api/like", likeApis);
-  app.use("api/location", locationApis);
-  app.use("api/measurement", measurementApis);
-  app.use("api/media", mediaApis);
-  app.use("api/notification", notificationApis);
-  app.use("api/post", postApis);
-  app.use("api/review", reviewApis);
-  app.use("api/save", saveApis);
-  app.use("api/user", userApis);
+  app.use("/api/auth", userApis);
+  app.use("/api/business", businessApis);
+  app.use("/api/category", categoryApis);
+  app.use("/api/comment", commentApis);
+  app.use("/api/faq", faqApis);
+  app.use("/api/like", likeApis);
+  app.use("/api/location", locationApis);
+  app.use("/api/measurement", measurementApis);
+  app.use("/api/media", mediaApis);
+  app.use("/api/notification", notificationApis);
+  app.use("/api/post", postApis);
+  app.use("/api/review", reviewApis);
+  app.use("/api/save", saveApis);
 
   swaggerDocs(app);
 

@@ -4,6 +4,7 @@ import { INotificationRepository } from "../../repository/RepositoryInterfaces";
 import INotificationService from "../INotificationService";
 import { NotificationDto } from "../../dto/NotificationDto";
 import AppNotification from "../../models/Notification";
+import { plainToClass } from "class-transformer";
 
 @injectable()
 export default class NotificationService implements INotificationService {
@@ -15,10 +16,12 @@ export default class NotificationService implements INotificationService {
   ) {
     this.iNotificationRepository = NotificationRepository;
   }
-  createNotification(
+  async createNotification(
     notificationRequestDto: NotificationDto
   ): Promise<AppNotification> {
-    throw new Error("Method not implemented.");
+    let data = plainToClass(AppNotification, notificationRequestDto);
+    const notification = await this.iNotificationRepository.create(data);
+    return Promise.resolve(notification);
   }
   updateNotification(
     notification: Notification,
@@ -26,16 +29,25 @@ export default class NotificationService implements INotificationService {
   ): Promise<Notification> {
     throw new Error("Method not implemented.");
   }
-  geNotificationByProperty(property: any): Promise<AppNotification> {
-    throw new Error("Method not implemented.");
+  async geNotificationByProperty(property: any): Promise<AppNotification> {
+    const notification = await this.iNotificationRepository.findOne(property);
+    return Promise.resolve(notification);
   }
-  getUserNotifications(id: string): Promise<AppNotification[]> {
-    throw new Error("Method not implemented.");
+  async getUserNotifications(id: string): Promise<AppNotification[]> {
+    const notification = await this.iNotificationRepository.find({
+      userId: id,
+    });
+    return Promise.resolve(notification);
   }
-  readNotification(id: string): Promise<AppNotification> {
-    throw new Error("Method not implemented.");
+  async readNotification(id: string): Promise<AppNotification> {
+    const notification: AppNotification =
+      await this.iNotificationRepository.findOne({ userId: id });
+    notification.isRead = true;
+    const notificationResponse: AppNotification =
+      await this.iNotificationRepository.update(id, notification);
+    return Promise.resolve(notificationResponse);
   }
-  deleteNotification(Notification: AppNotification): Promise<void> {
-    throw new Error("Method not implemented.");
+  async deleteNotification(notification: AppNotification): Promise<void> {
+    await this.iNotificationRepository.delete(notification);
   }
 }

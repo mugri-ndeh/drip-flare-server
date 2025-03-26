@@ -5,6 +5,7 @@ import { ISaveRepository } from "../../repository/RepositoryInterfaces";
 import { SaveDto } from "../../dto/SaveDto";
 import Save from "../../models/Save";
 import ISaveService from "../ISaveService";
+import { plainToClass } from "class-transformer";
 
 @injectable()
 export default class SaveService implements ISaveService {
@@ -13,31 +14,49 @@ export default class SaveService implements ISaveService {
   constructor(@inject(IOC.ISaveRepository) SaveRepository: ISaveRepository) {
     this.iSaveRepository = SaveRepository;
   }
-  getAllUserSaves(userId: string): Promise<Save[]> {
-    throw new Error("Method not implemented.");
+  async getAllUserSaves(userId: string): Promise<Save[]> {
+    const saves = await this.iSaveRepository.find({ userId: userId });
+    return Promise.resolve(saves);
   }
-  getAllPostSaves(postId: string): Promise<Save[]> {
-    throw new Error("Method not implemented.");
+  async getAllPostSaves(postId: string): Promise<Save[]> {
+    const saves = await this.iSaveRepository.find({ postId: postId });
+    return Promise.resolve(saves);
   }
-  createSave(SaveRequestDto: SaveDto): Promise<Save> {
-    throw new Error("Method not implemented.");
+  async createSave(saveRequestDto: SaveDto): Promise<Save> {
+    let data = plainToClass(Save, saveRequestDto);
+    const save = await this.iSaveRepository.create(data);
+    return Promise.resolve(save);
   }
-  updateSave(Save: Save, SaveDto: SaveDto): Promise<Save> {
-    throw new Error("Method not implemented.");
+  async updateSave(save: Save, saveDto: SaveDto): Promise<Save> {
+    if (saveDto)
+      for (const [key, value] of Object.entries(saveDto)) {
+        if (value !== undefined) {
+          (save as any)[key] = value;
+        }
+      }
+
+    const saveResponse: Save = await this.iSaveRepository.update(save.id, save);
+
+    return Promise.resolve(saveResponse);
   }
-  geSaveByProperty(property: any): Promise<Save> {
-    throw new Error("Method not implemented.");
+  async geSaveByProperty(property: any): Promise<Save> {
+    const save = await this.iSaveRepository.findOne(property);
+    return Promise.resolve(save);
   }
-  getSaveById(id: any): Promise<Save> {
-    throw new Error("Method not implemented.");
+  async getSaveById(id: any): Promise<Save> {
+    const save = await this.iSaveRepository.findOne({ id: id });
+    return Promise.resolve(save);
   }
-  getSaveByUserId(id: any): Promise<Save> {
-    throw new Error("Method not implemented.");
+  async getSaveByUserId(id: any): Promise<Save> {
+    const save = await this.iSaveRepository.findOne({ userId: id });
+
+    return Promise.resolve(save);
   }
-  getSaveEntityById(id: string): Promise<Save> {
-    throw new Error("Method not implemented.");
+  async getSaveEntityById(id: string): Promise<Save> {
+    const save = await this.iSaveRepository.findOne({ id: id });
+    return Promise.resolve(save);
   }
-  deleteSave(Save: Save): Promise<void> {
-    throw new Error("Method not implemented.");
+  async deleteSave(save: Save): Promise<void> {
+    await this.iSaveRepository.delete(save);
   }
 }

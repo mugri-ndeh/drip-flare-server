@@ -10,7 +10,7 @@ export default interface IReviewService {
 
   getBusinessReviews(id: string): Promise<Review[]>;
 
-  getReviewEntityByProperty(id: any): Promise<Review>;
+  getReviewEntityByProperty(property: any): Promise<Review>;
 
   deleteReview(Review: Review): Promise<void>;
 }
